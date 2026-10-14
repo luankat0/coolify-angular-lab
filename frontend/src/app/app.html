@@ -1,0 +1,48 @@
+
+<main class="container">
+  <header>
+    <span class="tag">FULLSTACK DEPLOY LAB</span>
+    <h1>Minhas Tarefas</h1>
+    <p>Angular + Express + PostgreSQL</p>
+  </header>
+
+  <form (submit)="$event.preventDefault(); addTask()">
+    <input
+      #taskInput
+      type="text"
+      placeholder="Digite uma nova tarefa..."
+      maxlength="255"
+      [value]="newTitle()"
+      (input)="newTitle.set(taskInput.value)"
+    />
+
+    <button type="submit" [disabled]="busy()">
+      Adicionar
+    </button>
+  </form>
+
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+
+  <section class="tasks">
+    <h2>Tarefas cadastradas ({{ tasks().length }})</h2>
+
+    @for (task of tasks(); track task.id) {
+      <div class="task">
+        <span>{{ task.title }}</span>
+
+        <button
+          type="button"
+          class="delete"
+          [disabled]="busy()"
+          (click)="removeTask(task.id)"
+        >
+          Excluir
+        </button>
+      </div>
+    } @empty {
+      <p class="empty">Nenhuma tarefa cadastrada.</p>
+    }
+  </section>
+</main>
